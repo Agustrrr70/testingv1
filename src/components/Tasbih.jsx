@@ -43,7 +43,7 @@ const Tasbih = () => {
           fontSize: "1.2rem",
         }}
       >
-        <p>Halaman Tasbih. Konten bisa kamu ganti sesuai kebutuhan.</p>
+        <p>Kontainer Tasbih.</p>
       </div>
     </div>
   );
