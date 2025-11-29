@@ -42,7 +42,7 @@ const Home = () => {
           position: "absolute",
           bottom: "10%",
           left: 0,
-          background: "gray",
+        //   background: "gray",
           width: "100%",
           height: "55%",
           borderRadius: "20px 20px 0 0",
