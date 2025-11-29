@@ -4,20 +4,15 @@ const Home = () => {
   return (
     <div
       style={{
-        width: "100%",
-        display: "flex",
-        justifyContent: "center",
+        width: "100vw",
+        height: "100vh",
+        backgroundImage: 'url(/images/backgroundmain.png)',
+        backgroundSize: "100% 100%",   // stretch agar selalu memenuhi layar
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
       }}
     >
-      <img
-        src="/images/backgroundmain.png"   // sesuaikan nama file
-        alt="Home Background"
-        style={{
-          width: "100%",
-          height: "auto",
-          display: "block",
-        }}
-      />
+      {/* Letakkan elemen lain di sini */}
     </div>
   );
 };
