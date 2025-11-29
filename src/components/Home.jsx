@@ -10,7 +10,7 @@ const Home = () => {
       }}
     >
       <img
-        src="/images/backgroundmain.png"   // sesuaikan nama file
+        src="/imags/backgroundmain.png"   // sesuaikan nama file
         alt="Home Background"
         style={{
           width: "100%",
