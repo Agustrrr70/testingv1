@@ -42,9 +42,11 @@ const Home = () => {
           position: "absolute",
           bottom: "11%",
           left: 0,
+          background: "gray",
           width: "100%",
           height: "55vh",
           borderRadius: "20px 20px 0 0",
+          paddingTop : "35px",
           padding: "20px",
           display: "flex",
           justifyContent: "center",
@@ -78,7 +80,7 @@ const Home = () => {
                 src={item.img}
                 style={{
                   width: "80%",
-                  height: "85%",
+                  height: "83%",
                   objectFit: "fill",
                   borderRadius: "18%",
                 }}
