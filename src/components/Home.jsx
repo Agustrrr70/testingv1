@@ -67,7 +67,7 @@ const Home = () => {
             <div
               key={index}
               style={{
-                borderRadius: "16px",
+                borderRadius: "10px",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -79,8 +79,8 @@ const Home = () => {
                 style={{
                   width: "70%",
                   height: "70%",
-                  objectFit: "cover",
-                  borderRadius: "40px", // 🔵 BIKIN IKON BUNDAR
+                  objectFit: "fill",
+                  borderRadius: "10%",
                 }}
               />
             </div>
