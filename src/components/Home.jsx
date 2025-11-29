@@ -1,6 +1,9 @@
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // import hook navigasi
 
 const Home = () => {
+  const navigate = useNavigate();
+
   useEffect(() => {
     const setVH = () => {
       const vh = window.innerHeight * 0.01;
@@ -13,16 +16,20 @@ const Home = () => {
   }, []);
 
   const menuItems = [
-    { img: "/images/surah.png" },
-    { img: "/images/wirid.png" },
-    { img: "/images/doa.png" },
-    { img: "/images/khutbah.png" },
-    { img: "/images/dalail.png" },
-    { img: "/images/tasbih.png" },
-    { img: "/images/burdah.png" },
-    { img: "/images/simt.png" },
-    { img: "/images/ma.png" },
+    { img: "/images/surah.png", route: "/surah" },
+    { img: "/images/wirid.png", route: "/wirid" },
+    { img: "/images/doa.png", route: "/doa" },
+    { img: "/images/khutbah.png", route: "/khutbah" },
+    { img: "/images/dalail.png", route: "/dalail" },
+    { img: "/images/tasbih.png", route: "/tasbih" },
+    { img: "/images/burdah.png", route: "/burdah" },
+    { img: "/images/simt.png", route: "/simthut" },
+    { img: "/images/ma.png", route: "/ma" },
   ];
+
+  const handleClick = (route) => {
+    navigate(route);
+  };
 
   return (
     <div
@@ -42,9 +49,8 @@ const Home = () => {
           position: "absolute",
           bottom: "10%",
           left: 0,
-        //   background: "gray",
           width: "100%",
-          height: "55%",
+          height: "57%",
           borderRadius: "20px 20px 0 0",
           padding: "20px",
           display: "flex",
@@ -53,7 +59,7 @@ const Home = () => {
           boxSizing: "border-box",
         }}
       >
-        {/* GRID WRAPPER yang terkunci di dalam kontainer-all */}
+        {/* GRID WRAPPER */}
         <div
           style={{
             width: "100%",
@@ -67,7 +73,9 @@ const Home = () => {
           {menuItems.map((item, index) => (
             <div
               key={index}
+              onClick={() => handleClick(item.route)} // navigasi saat diklik
               style={{
+                cursor: "pointer",
                 borderRadius: "10px",
                 display: "flex",
                 alignItems: "center",
