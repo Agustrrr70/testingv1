@@ -60,7 +60,7 @@ const Home = () => {
             display: "grid",
             gridTemplateColumns: "repeat(3, 1fr)",
             gridTemplateRows: "repeat(3, 1fr)",
-            gap: "15px",
+            gap: "5px",
           }}
         >
           {menuItems.map((item, index) => (
@@ -80,7 +80,7 @@ const Home = () => {
                   width: "80%",
                   height: "85%",
                   objectFit: "fill",
-                  borderRadius: "10%",
+                  borderRadius: "18%",
                 }}
               />
             </div>
