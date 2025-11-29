@@ -3,7 +3,7 @@ import React from 'react'
 const Dalail = () => {
   return (
     <div>
-      Dalail(soon)
+      Dalailul Khairat(soon)
     </div>
   )
 }

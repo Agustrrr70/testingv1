@@ -3,7 +3,7 @@ import React from 'react'
 const Simthud = () => {
   return (
     <div>
-      Simthud(soon)
+      Simthud dhoror(soon)
     </div>
   )
 }

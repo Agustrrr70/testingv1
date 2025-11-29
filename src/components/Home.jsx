@@ -23,8 +23,8 @@ const Home = () => {
     { img: "/images/dalail.png", route: "/dalail" },
     { img: "/images/tasbih.png", route: "/tasbih" },
     { img: "/images/burdah.png", route: "/burdah" },
-    { img: "/images/simt.png", route: "/simthut" },
-    { img: "/images/ma.png", route: "/ma" },
+    { img: "/images/simt.png", route: "/simthud" },
+    { img: "/images/ma.png", route: "/maulid" },
   ];
 
   const handleClick = (route) => {
