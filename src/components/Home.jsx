@@ -40,13 +40,12 @@ const Home = () => {
       <div
         style={{
           position: "absolute",
-          bottom: "11%",
+          bottom: "10%",
           left: 0,
           background: "gray",
           width: "100%",
-          height: "55vh",
+          height: "55%",
           borderRadius: "20px 20px 0 0",
-          paddingTop : "35px",
           padding: "20px",
           display: "flex",
           justifyContent: "center",
