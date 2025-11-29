@@ -77,8 +77,8 @@ const Home = () => {
               <img
                 src={item.img}
                 style={{
-                  width: "70%",
-                  height: "70%",
+                  width: "80%",
+                  height: "85%",
                   objectFit: "fill",
                   borderRadius: "10%",
                 }}
