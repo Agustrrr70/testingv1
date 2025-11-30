@@ -29,7 +29,7 @@ const Tasbih = () => {
     <div
       style={{
         width: "100vw",
-        height: "100vh",
+        height: "calc(var(--vh) * 100)", // ✅ FIX BACKGROUND MOBILE
         overflow: "hidden",
         position: "relative",
       }}
@@ -41,10 +41,10 @@ const Tasbih = () => {
       <div
         style={{
           width: "100%",
-          height: `calc(100vh - ${HEADER_HEIGHT_PX}px)`,
+          height: `calc((var(--vh) * 100) - ${HEADER_HEIGHT_PX}px)`, // ✅ FIX MOBILE
           marginTop: `${HEADER_HEIGHT_PX}px`,
           backgroundImage: "url(/images/backgroundtasbih.png)",
-          backgroundSize: "100% 100%",
+          backgroundSize: "100% 100%", // stretch penuh TIDAK TERPOTONG
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center top",
           position: "relative",
@@ -143,7 +143,9 @@ const Tasbih = () => {
               background: "transparent",
               bottom: POS.reset.bottom,
               left: POS.reset.left,
-              transform: `translateX(-50%) translateY(-120%) scale(${pressReset ? 1.1 : 1})`,
+              transform: `translateX(-50%) translateY(-120%) scale(${
+                pressReset ? 1.1 : 1
+              })`,
               transition: "transform 120ms ease-out",
             }}
           >
