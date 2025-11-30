@@ -92,7 +92,7 @@ const Tasbih = () => {
             <div
               style={{
                 fontFamily: "Digital7, monospace",
-                fontSize: "clamp(2.8rem, 9vw, 4.8rem)",
+                fontSize: "clamp(3.2rem, 9vw, 4.8rem)",
                 fontWeight: 500,
               }}
             >
