@@ -56,7 +56,7 @@ const Tasbih = () => {
       >
         <div
           style={{
-            width: "78%",
+            width: "76%",
             height: "40%",
             borderRadius: "20px",
             display: "flex",
@@ -152,7 +152,7 @@ const Tasbih = () => {
             <img
               src="/images/buttonklik.png"
               alt="reset"
-              style={{ width: "100%", height: "73%", objectFit: "fill" }}
+              style={{ width: "98%", height: "73%", objectFit: "fill" }}
             />
           </button>
         </div>
