@@ -1,9 +1,11 @@
 import React from 'react'
+import Header from './Header'
 
 const Maulid = () => {
   return (
     <div>
-      Maulid(soon)
+      <Header title="Maulid Azab" />
+      Maulid Azab (soon)
     </div>
   )
 }

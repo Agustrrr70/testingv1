@@ -1,9 +1,10 @@
 import React from 'react'
+import Header from './Header'
 
 const Surah = () => {
   return (
     <div>
-      Surah(soon) 
+      <Header title="Surah" />
     </div>
   )
 }

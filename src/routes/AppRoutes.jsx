@@ -8,6 +8,7 @@ import Dalail from "../components/Dalail";
 import Tasbih from "../components/Tasbih";
 import Burdah from "../components/Burdah";
 import Simthud from "../components/Simthud";
+import Maulid from "../components/Maulid";
 
 export default function AppRoutes() {
   return (
@@ -22,6 +23,7 @@ export default function AppRoutes() {
         <Route path="/tasbih" element={<Tasbih />} />
         <Route path="/burdah" element={<Burdah />} />
         <Route path="/simthud" element={<Simthud />} />
+        <Route path="/maulid" element={<Maulid />} />
       </Routes>
     </BrowserRouter>
   );

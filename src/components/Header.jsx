@@ -8,7 +8,7 @@ const Header = ({ title }) => {
       style={{
         width: "100%",
         height: `${HEADER_HEIGHT}px`,
-        backgroundColor: "#ffffff",
+        backgroundColor: "#05420bff",
         boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
         display: "flex",
         alignItems: "center",
@@ -19,8 +19,27 @@ const Header = ({ title }) => {
         zIndex: 999,
         fontSize: "20px",
         fontWeight: "bold",
+        color: "#ffffff", // warna teks judul jadi putih
       }}
     >
+      {/* Tombol Back */}
+      <button
+        onClick={() => window.history.back()}
+        style={{
+          position: "absolute",
+          left: "12px",
+          fontSize: "18px",
+          background: "none",
+          border: "none",
+          cursor: "pointer",
+          fontWeight: "bold",
+          color: "#ffffff", // tombol back juga putih agar serasi
+        }}
+      >
+        ←
+      </button>
+
+      {/* Title */}
       {title}
     </header>
   );
