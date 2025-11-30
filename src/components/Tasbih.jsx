@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
+import Header, { HEADER_HEIGHT_PX } from "./Header";
 
 const Tasbih = () => {
   const [count, setCount] = useState(0);
-  const [pressClick, setPressClick] = useState(false); // animasi tombol klik
-  const [pressReset, setPressReset] = useState(false); // animasi tombol reset
+  const [pressClick, setPressClick] = useState(false);
+  const [pressReset, setPressReset] = useState(false);
 
   useEffect(() => {
     const setVH = () => {
@@ -28,136 +29,131 @@ const Tasbih = () => {
     <div
       style={{
         width: "100vw",
-        height: "calc(var(--vh) * 100)",
-        backgroundImage: "url(/images/backgroundtasbih.png)",
-        backgroundSize: "100% 100%",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center top",
+        height: "100vh",
         overflow: "hidden",
         position: "relative",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
       }}
     >
+      {/* HEADER GLOBAL */}
+      <Header title="Tasbih Digital" />
+
+      {/* SEMUA KONTEN DI BAWAH HEADER */}
       <div
         style={{
-          width: "80%",
-          height: "40%",
-          borderRadius: "20px",
+          width: "100%",
+          height: `calc(100vh - ${HEADER_HEIGHT_PX}px)`,
+          marginTop: `${HEADER_HEIGHT_PX}px`,
+          backgroundImage: "url(/images/backgroundtasbih.png)",
+          backgroundSize: "100% 100%",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center top",
+          position: "relative",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          padding: "20px",
-          boxSizing: "border-box",
-          position: "relative",
+          overflow: "hidden",
         }}
       >
-        {/* GAMBAR TASBIH */}
-        <img
-          src="/images/tasbihactiv.png"
-          alt="tasbih"
-          style={{
-            position: "absolute",
-            ...POS.tasbih,
-            objectFit: "fill",
-            borderRadius: "20px",
-            pointerEvents: "none",
-            opacity: 0.98,
-          }}
-        />
-
-        {/* COUNTER */}
         <div
           style={{
-            position: "absolute",
-            top: POS.counter.top,
-            left: 0,
-            right: 0,
+            width: "80%",
+            height: "40%",
+            borderRadius: "20px",
             display: "flex",
             justifyContent: "center",
-            pointerEvents: "none",
+            alignItems: "center",
+            padding: "20px",
+            position: "relative",
           }}
         >
+          {/* TASBIH IMAGE */}
+          <img
+            src="/images/tasbihactiv.png"
+            alt="tasbih"
+            style={{
+              position: "absolute",
+              ...POS.tasbih,
+              objectFit: "fill",
+              pointerEvents: "none",
+            }}
+          />
+
+          {/* COUNTER */}
           <div
             style={{
-              fontFamily: "Digital7, monospace",
-              fontSize: "clamp(2.8rem, 9vw, 4.8rem)",
-              fontWeight: 500,
-              letterSpacing: "2px",
-              padding: "1px 12px",
-              borderRadius: "6px",
-              color: "#383838ff",
-              transform: "translateX(1px)",
+              position: "absolute",
+              top: POS.counter.top,
+              left: 0,
+              right: 0,
+              display: "flex",
+              justifyContent: "center",
             }}
           >
-            {formatted}
+            <div
+              style={{
+                fontFamily: "Digital7, monospace",
+                fontSize: "clamp(2.8rem, 9vw, 4.8rem)",
+                fontWeight: 500,
+              }}
+            >
+              {formatted}
+            </div>
           </div>
+
+          {/* BUTTON KLIK */}
+          <button
+            onClick={() => {
+              setPressClick(true);
+              setCount(count + 1);
+              setTimeout(() => setPressClick(false), 120);
+            }}
+            style={{
+              position: "absolute",
+              width: "30%",
+              height: "27%",
+              borderRadius: "50%",
+              border: "none",
+              background: "transparent",
+              bottom: POS.button.bottom,
+              left: POS.button.left,
+              transform: `translateX(-50%) scale(${pressClick ? 1.08 : 1})`,
+              transition: "transform 120ms ease-out",
+            }}
+          >
+            <img
+              src="/images/buttonklik.png"
+              alt="klik"
+              style={{ width: "100%", height: "100%", objectFit: "fill" }}
+            />
+          </button>
+
+          {/* BUTTON RESET */}
+          <button
+            onClick={() => {
+              setPressReset(true);
+              setCount(0);
+              setTimeout(() => setPressReset(false), 120);
+            }}
+            style={{
+              position: "absolute",
+              width: "10%",
+              height: "10%",
+              borderRadius: "50%",
+              border: "none",
+              background: "transparent",
+              bottom: POS.reset.bottom,
+              left: POS.reset.left,
+              transform: `translateX(-50%) translateY(-120%) scale(${pressReset ? 1.1 : 1})`,
+              transition: "transform 120ms ease-out",
+            }}
+          >
+            <img
+              src="/images/buttonklik.png"
+              alt="reset"
+              style={{ width: "105%", height: "73%", objectFit: "fill" }}
+            />
+          </button>
         </div>
-
-        {/* BUTTON KLIK */}
-        <button
-          onClick={() => {
-            setPressClick(true);
-            setCount(count + 1);
-            setTimeout(() => setPressClick(false), 120);
-          }}
-          style={{
-            position: "absolute",
-            width: "30%",
-            height: "27%",
-            borderRadius: "50%",
-            border: "none",
-            background: "transparent",
-            bottom: POS.button.bottom,
-            left: POS.button.left,
-            transform: `translateX(-50%) scale(${pressClick ? 1.08 : 1})`,
-            transition: "transform 120ms ease-out",
-            cursor: "pointer",
-          }}
-        >
-          <img
-            src="/images/buttonklik.png"
-            alt="klik"
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "fill",
-            }}
-          />
-        </button>
-
-        {/* BUTTON RESET */}
-        <button
-          onClick={() => {
-            setPressReset(true);
-            setCount(0);
-            setTimeout(() => setPressReset(false), 120);
-          }}
-          style={{
-            position: "absolute",
-            width: "10%",
-            height: "10%",
-            borderRadius: "50%",
-            border: "none",
-            background: "transparent",
-            bottom: POS.reset.bottom,
-            left: POS.reset.left,
-            transform: `translateX(-50%) translateY(-120%) scale(${pressReset ? 1.1 : 1})`,
-            transition: "transform 120ms ease-out",
-            cursor: "pointer",
-          }}
-        >
-          <img
-            src="/images/buttonklik.png"
-            alt="reset"
-            style={{
-              width: "105%",
-              height: "73%",
-              objectFit: "fill",
-            }}
-          />
-        </button>
       </div>
     </div>
   );
