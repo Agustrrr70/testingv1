@@ -4,3 +4,7 @@ html, body {
   height: 100%;
   overflow: hidden; /* tidak bisa geser */
 }
+@font-face {
+  font-family: 'Digital7';
+  src: url('/font/digital-7.ttf') format('truetype');
+}

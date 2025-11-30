@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 
 const Tasbih = () => {
   const [count, setCount] = useState(0);
+  const [pressClick, setPressClick] = useState(false); // animasi tombol klik
+  const [pressReset, setPressReset] = useState(false); // animasi tombol reset
 
-  // --- HITUNG --vh UNTUK MOBILE (menghindari terpotong oleh navigation bar) ---
   useEffect(() => {
     const setVH = () => {
       const vh = window.innerHeight * 0.01;
@@ -15,10 +16,10 @@ const Tasbih = () => {
   }, []);
 
   const POS = {
-    tasbih: { top: "5%", left: "-25%", width: "150%", height: "90%" },
-    counter: { top: "20%" },
-    button: { bottom: "19%", left: "50%" },
-    reset: { bottom: "37.5%", left: "63.5%" },
+    tasbih: { top: "11%", left: "-25%", width: "150%", height: "78%" },
+    counter: { top: "24%" },
+    button: { bottom: "22%", left: "49.5%" },
+    reset: { bottom: "36%", left: "63.3%" },
   };
 
   const formatted = String(count).padStart(4, "0");
@@ -27,7 +28,6 @@ const Tasbih = () => {
     <div
       style={{
         width: "100vw",
-        // gunakan --vh yang sudah dihitung untuk menghindari terpotong di mobile
         height: "calc(var(--vh) * 100)",
         backgroundImage: "url(/images/backgroundtasbih.png)",
         backgroundSize: "100% 100%",
@@ -45,7 +45,6 @@ const Tasbih = () => {
           width: "80%",
           height: "40%",
           borderRadius: "20px",
-          backgroundColor: "rgba(147,146,146,0.8)",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -82,14 +81,14 @@ const Tasbih = () => {
         >
           <div
             style={{
-              fontFamily: "monospace",
-              fontSize: "clamp(1.6rem, 6vw, 2.4rem)",
-              letterSpacing: 2,
-              background: "rgba(0, 0, 0, 0.35)",
-              padding: "6px 14px",
-              borderRadius: 8,
-              color: "#fff",
-              boxShadow: "0 4px 12px rgba(0,0,0,0.25)",
+              fontFamily: "Digital7, monospace",
+              fontSize: "clamp(2.8rem, 9vw, 4.8rem)",
+              fontWeight: 500,
+              letterSpacing: "2px",
+              padding: "1px 12px",
+              borderRadius: "6px",
+              color: "#383838ff",
+              transform: "translateX(1px)",
             }}
           >
             {formatted}
@@ -98,17 +97,22 @@ const Tasbih = () => {
 
         {/* BUTTON KLIK */}
         <button
-          onClick={() => setCount(count + 1)}
+          onClick={() => {
+            setPressClick(true);
+            setCount(count + 1);
+            setTimeout(() => setPressClick(false), 120);
+          }}
           style={{
             position: "absolute",
             width: "30%",
-            height: "30%",
+            height: "27%",
             borderRadius: "50%",
             border: "none",
             background: "transparent",
             bottom: POS.button.bottom,
             left: POS.button.left,
-            transform: "translateX(-50%)",
+            transform: `translateX(-50%) scale(${pressClick ? 1.08 : 1})`,
+            transition: "transform 120ms ease-out",
             cursor: "pointer",
           }}
         >
@@ -119,15 +123,17 @@ const Tasbih = () => {
               width: "100%",
               height: "100%",
               objectFit: "fill",
-              filter:
-                "brightness(0) saturate(100%) invert(18%) sepia(95%) saturate(7481%) hue-rotate(1deg) brightness(94%) contrast(118%)",
             }}
           />
         </button>
 
         {/* BUTTON RESET */}
         <button
-          onClick={() => setCount(0)}
+          onClick={() => {
+            setPressReset(true);
+            setCount(0);
+            setTimeout(() => setPressReset(false), 120);
+          }}
           style={{
             position: "absolute",
             width: "10%",
@@ -137,7 +143,8 @@ const Tasbih = () => {
             background: "transparent",
             bottom: POS.reset.bottom,
             left: POS.reset.left,
-            transform: "translateX(-50%) translateY(-120%)",
+            transform: `translateX(-50%) translateY(-120%) scale(${pressReset ? 1.1 : 1})`,
+            transition: "transform 120ms ease-out",
             cursor: "pointer",
           }}
         >
@@ -145,11 +152,9 @@ const Tasbih = () => {
             src="/images/buttonklik.png"
             alt="reset"
             style={{
-              width: "100%",
-              height: "100%",
+              width: "105%",
+              height: "73%",
               objectFit: "fill",
-              filter:
-                "brightness(0) saturate(100%) invert(18%) sepia(95%) saturate(7481%) hue-rotate(1deg) brightness(94%) contrast(118%)",
             }}
           />
         </button>
