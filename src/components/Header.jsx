@@ -19,7 +19,7 @@ const Header = ({ title }) => {
         zIndex: 999,
         fontSize: "20px",
         fontWeight: "bold",
-        color: "#ffffff", // warna teks judul jadi putih
+        color: "#ffffff", // warna teks judul  
       }}
     >
       {/* Tombol Back */}
@@ -33,7 +33,7 @@ const Header = ({ title }) => {
           border: "none",
           cursor: "pointer",
           fontWeight: "bold",
-          color: "#ffffff", // tombol back juga putih agar serasi
+          color: "#ffffff", // tombol back 
         }}
       >
         ←
