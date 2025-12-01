@@ -2,7 +2,7 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  overflow: hidden; /* tidak bisa geser */
+  /* overflow: hidden;  */
 }
 @font-face {
   font-family: 'Digital7';
@@ -12,5 +12,9 @@ html, body {
   max-width: 420px;   /* ukuran ideal aplikasi mobile */
   margin: 0 auto;     /* biar tetap di tengah */
   background-color: #ffffff00; /* opsional */
+}
+/* Izinkan zoom pada area PDF */
+.pdf-zoom-area {
+    touch-action: pinch-zoom; /* allow pinch just here */
 }
 
