@@ -18,7 +18,7 @@ const Tasbih = () => {
 
   const POS = {
     tasbih: { top: "11%", left: "-25%", width: "150%", height: "78%" },
-    counter: { top: "24%" },
+    counter: { top: "23%" },
     button: { bottom: "22%", left: "49.5%" },
     reset: { bottom: "36%", left: "63.3%" },
   };
@@ -93,7 +93,7 @@ const Tasbih = () => {
             <div
               style={{
                 fontFamily: "Digital7, monospace",
-                fontSize: "clamp(3.2rem, 9vw, 4.8rem)",
+                fontSize: "clamp(3.2rem, 9vw, 3.2rem)",
                 fontWeight: 500,
               }}
             >
