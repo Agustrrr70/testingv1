@@ -89,7 +89,7 @@ const Home = () => {
                 alignItems: "center",
                 justifyContent: "center",
                 overflow: "hidden",
-                transform: activeIndex === index ? "scale(1.10)" : "scale(1)",
+                transform: activeIndex === index ? "scale(1.05)" : "scale(1)",
                 transition: "transform 0.15s ease-out",
               }}
             >
