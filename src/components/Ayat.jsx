@@ -34,7 +34,6 @@ const Ayat = () => {
         style={{
           flex: 1,
           overflowY: "auto",
-          overflowX: "hidden", // anti scroll samping
         }}
       >
         <Worker

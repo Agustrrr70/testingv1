@@ -4,13 +4,24 @@ html, body {
   height: 100%;
   overflow: hidden; /* tidak bisa geser */
 }
+
+/* FONT */
 @font-face {
   font-family: 'Digital7';
   src: url('/font/digital-7.ttf') format('truetype');
 }
+
+/* Default: aplikasi TIDAK bisa pinch-zoom */
 .app-container {
-  max-width: 420px;   /* ukuran ideal aplikasi mobile */
-  margin: 0 auto;     /* biar tetap di tengah */
-  background-color: #ffffff00; /* opsional */
+  touch-action: none;
+  max-width: 420px;
+  margin: 0 auto;
+  background-color: #ffffff00;
 }
 
+/* IZINKAN pinch-zoom khusus untuk PDF viewer */
+.rpv-core__viewer,
+.rpv-core__inner,
+.rpv-core__viewer * {
+  touch-action: pinch-zoom !important;
+}
