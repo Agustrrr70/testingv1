@@ -22,35 +22,37 @@ const Header = ({ title, onSearchChange }) => {
         padding: "0 12px",
       }}
     >
-      {/* Tombol Back */}
+      {/* Tombol Back (sedikit naik) */}
       <button
         onClick={() => window.history.back()}
         style={{
-          fontSize: "20px",       // ⬅ dibuat lebih besar
-          fontWeight: "900",      // ⬅ dipertebal
+          fontSize: "22px",
+          fontWeight: "1000",
           background: "none",
           border: "none",
           cursor: "pointer",
           color: "#ffffff",
+          position: "relative",
+          top: "-3px",
         }}
       >
         ←
       </button>
 
-      {/* Title kiri dekat tombol back */}
+      {/* Title */}
       <div
         style={{
-          marginLeft: "8px",      // ⬅ jarak kecil dari tombol back
+          marginLeft: "8px",
           fontSize: "20px",
           fontWeight: "bold",
           color: "#ffffff",
-          flex: 1,                // ⬅ supaya search tetap di kanan
+          flex: 1,
         }}
       >
         {title}
       </div>
 
-      {/* Search bar */}
+      {/* Search bar (lebih kanan + lebih proporsional) */}
       {onSearchChange ? (
         <input
           type="text"
@@ -65,10 +67,12 @@ const Header = ({ title, onSearchChange }) => {
             width: "120px",
             background: "#ffffff",
             color: "#000",
+            marginRight: "5px", // ⬅ GESER KE KIRI
+            transform: "translateX(-4px)", // ⬅ sedikit rapikan
           }}
         />
       ) : (
-        <div style={{ width: "120px" }} />
+        <div style={{ width: "110px" }} />
       )}
     </header>
   );

@@ -8,8 +8,7 @@ const Surah = () => {
   const filteredSurah = surahList.filter(
     (s) =>
       s.name.toLowerCase().includes(keyword.toLowerCase()) ||
-      s.meaning.toLowerCase().includes(keyword.toLowerCase()) ||
-      s.number.toString().includes(keyword)
+      s.meaning.toLowerCase().includes(keyword.toLowerCase())
   );
 
   return (
@@ -21,7 +20,7 @@ const Surah = () => {
         margin: "0 auto",
         paddingTop: HEADER_HEIGHT_PX,
         height: "100vh",
-        overflowY: "auto", // ⬅ HALAMAN INI BOLEH SCROLL
+        overflowY: "auto",
         overflowX: "hidden",
       }}
     >
@@ -51,18 +50,18 @@ const Surah = () => {
           >
             <div
               style={{
-                fontSize: "13px",
+                fontSize: "14px",
                 fontWeight: 600,
-                marginBottom: "4px",
+                marginBottom: "3px",
                 color: "#222",
               }}
             >
-              {s.number}. {s.name}
+              {s.name}
             </div>
 
             <div
               style={{
-                fontSize: "10px",
+                fontSize: "11px",
                 color: "#666",
               }}
             >
@@ -75,7 +74,7 @@ const Surah = () => {
           <p
             style={{
               textAlign: "center",
-              marginTop: "30px",
+              marginTop: "70%",
               color: "#777",
               fontSize: "15px",
             }}
