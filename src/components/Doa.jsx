@@ -5,7 +5,6 @@ const Doa = () => {
   return (
     <div>
       <Header title="Doa" />
-      Doa (soon)
     </div>
   )
 }

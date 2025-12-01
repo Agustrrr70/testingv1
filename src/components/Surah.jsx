@@ -1,61 +1,86 @@
 import React, { useState } from "react";
-import Header from "./Header";
+import Header, { HEADER_HEIGHT_PX } from "./Header";
 import { surahList } from "../data/surahList";
 
 const Surah = () => {
-  const [query, setQuery] = useState("");
+  const [keyword, setKeyword] = useState("");
 
   const filteredSurah = surahList.filter(
     (s) =>
-      s.name.toLowerCase().includes(query.toLowerCase()) ||
-      s.meaning.toLowerCase().includes(query.toLowerCase()) ||
-      s.number.toString().includes(query)
+      s.name.toLowerCase().includes(keyword.toLowerCase()) ||
+      s.meaning.toLowerCase().includes(keyword.toLowerCase()) ||
+      s.number.toString().includes(keyword)
   );
 
   return (
-    <div style={{ padding: "50px" }}>
-      <Header title="Surah" />
-      <h2>Daftar Surah</h2>
+    <div
+      className="app-container"
+      style={{
+        width: "100%",
+        maxWidth: "420px",
+        margin: "0 auto",
+        paddingTop: HEADER_HEIGHT_PX,
+        height: "100vh",
+        overflowY: "auto", // ⬅ HALAMAN INI BOLEH SCROLL
+        overflowX: "hidden",
+      }}
+    >
+      <Header title="Surah" onSearchChange={setKeyword} />
 
-      {/* 🔍 Search Bar */}
-      <input
-        type="text"
-        placeholder="Cari surah..."
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        style={{
-          width: "100%",
-          padding: "12px 15px",
-          borderRadius: "25px",
-          border: "1px solid #ccc",
-          margin: "10px 0 20px",
-          fontSize: "15px",
-          outline: "none",
-          boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
-        }}
-      />
-
-      <ul style={{ listStyle: "none", padding: 0 }}>
+      <ul style={{ listStyle: "none", padding: 0, marginTop: "10px" }}>
         {filteredSurah.map((s) => (
           <li
             key={s.number}
             style={{
-              padding: "10px 15px",
-              marginBottom: "8px",
-              borderRadius: "8px",
-              background: "#f4f4f4",
+              padding: "12px 16px",
+              marginBottom: "10px",
+              borderRadius: "12px",
+              background: "#ffffff",
+              boxShadow: "0 1px 4px rgba(0, 0, 0, 0.08)",
+              transition: "all 0.2s ease",
+              cursor: "pointer",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "scale(1.01)";
+              e.currentTarget.style.boxShadow = "0 3px 10px rgba(0,0,0,0.12)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "scale(1)";
+              e.currentTarget.style.boxShadow = "0 1px 4px rgba(0,0,0,0.08)";
             }}
           >
-            <strong>
+            <div
+              style={{
+                fontSize: "13px",
+                fontWeight: 600,
+                marginBottom: "4px",
+                color: "#222",
+              }}
+            >
               {s.number}. {s.name}
-            </strong>
-            <div style={{ fontSize: "14px", color: "#555" }}>{s.meaning}</div>
+            </div>
+
+            <div
+              style={{
+                fontSize: "10px",
+                color: "#666",
+              }}
+            >
+              {s.meaning}
+            </div>
           </li>
         ))}
 
         {filteredSurah.length === 0 && (
-          <p style={{ color: "#777", textAlign: "center", marginTop: "20px" }}>
-            Surah tidak ditemukan…
+          <p
+            style={{
+              textAlign: "center",
+              marginTop: "30px",
+              color: "#777",
+              fontSize: "15px",
+            }}
+          >
+            Surah tidak ditemukan...
           </p>
         )}
       </ul>
