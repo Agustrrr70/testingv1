@@ -7,7 +7,6 @@ const Header = ({ title, onSearchChange }) => {
     <header
       style={{
         width: "100%",
-        maxWidth: "420px",
         height: `${HEADER_HEIGHT}px`,
         backgroundColor: "#05420bff",
         boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
