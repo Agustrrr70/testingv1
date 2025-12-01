@@ -9,7 +9,7 @@ html, body {
   src: url('/font/digital-7.ttf') format('truetype');
 }
 .app-container {
-  max-width: 650px;   /* ukuran ideal aplikasi mobile */
+  max-width: 500px;   /* ukuran ideal aplikasi mobile */
   margin: 0 auto;     /* biar tetap di tengah */
   background-color: #ffffff00; /* opsional */
 }
