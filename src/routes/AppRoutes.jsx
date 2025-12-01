@@ -9,6 +9,7 @@ import Tasbih from "../components/Tasbih";
 import Burdah from "../components/Burdah";
 import Simthud from "../components/Simthud";
 import Maulid from "../components/Maulid";
+import Ayat from "../components/Ayat";
 
 export default function AppRoutes() {
   return (
@@ -24,6 +25,7 @@ export default function AppRoutes() {
         <Route path="/burdah" element={<Burdah />} />
         <Route path="/simthud" element={<Simthud />} />
         <Route path="/maulid" element={<Maulid />} />
+        <Route path="/ayat/:id" element={<Ayat />} />
       </Routes>
     </BrowserRouter>
   );

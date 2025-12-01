@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import Header, { HEADER_HEIGHT_PX } from "./Header";
 import { surahList } from "../data/surahList";
+import { useNavigate } from "react-router-dom";
 
 const Surah = () => {
   const [keyword, setKeyword] = useState("");
+  const navigate = useNavigate();
 
   const filteredSurah = surahList.filter(
     (s) =>
@@ -39,14 +41,9 @@ const Surah = () => {
               transition: "all 0.2s ease",
               cursor: "pointer",
             }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "scale(1.01)";
-              e.currentTarget.style.boxShadow = "0 3px 10px rgba(0,0,0,0.12)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "scale(1)";
-              e.currentTarget.style.boxShadow = "0 1px 4px rgba(0,0,0,0.08)";
-            }}
+            onClick={() =>
+              navigate(`/ayat/${s.number}?name=${encodeURIComponent(s.name)}`)
+            }
           >
             <div
               style={{
@@ -59,29 +56,11 @@ const Surah = () => {
               {s.name}
             </div>
 
-            <div
-              style={{
-                fontSize: "11px",
-                color: "#666",
-              }}
-            >
+            <div style={{ fontSize: "11px", color: "#666" }}>
               {s.meaning}
             </div>
           </li>
         ))}
-
-        {filteredSurah.length === 0 && (
-          <p
-            style={{
-              textAlign: "center",
-              marginTop: "70%",
-              color: "#777",
-              fontSize: "15px",
-            }}
-          >
-            Surah tidak ditemukan...
-          </p>
-        )}
       </ul>
     </div>
   );
