@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"; // import hook navigasi
 
 const Home = () => {
   const navigate = useNavigate();
+  const [activeIndex, setActiveIndex] = React.useState(null);
 
   useEffect(() => {
     const setVH = () => {
@@ -27,8 +28,14 @@ const Home = () => {
     { img: "/images/ma.png", route: "/maulid" },
   ];
 
-  const handleClick = (route) => {
-    navigate(route);
+  const handleClick = (route, index) => {
+    setActiveIndex(index);
+
+    // tunggu 150ms biar animasi terlihat
+    setTimeout(() => {
+      setActiveIndex(null);
+      navigate(route);
+    }, 150);
   };
 
   return (
@@ -74,7 +81,7 @@ const Home = () => {
           {menuItems.map((item, index) => (
             <div
               key={index}
-              onClick={() => handleClick(item.route)} // navigasi saat diklik
+              onClick={() => handleClick(item.route, index)}
               style={{
                 cursor: "pointer",
                 borderRadius: "10px",
@@ -82,6 +89,8 @@ const Home = () => {
                 alignItems: "center",
                 justifyContent: "center",
                 overflow: "hidden",
+                transform: activeIndex === index ? "scale(1.10)" : "scale(1)",
+                transition: "transform 0.15s ease-out",
               }}
             >
               <img

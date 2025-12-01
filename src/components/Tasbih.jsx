@@ -153,7 +153,7 @@ const Tasbih = () => {
             <img
               src="/images/buttonklik.png"
               alt="reset"
-              style={{ width: "98%", height: "73%", objectFit: "fill" }}
+              style={{ width: "97%", height: "97%", objectFit: "fill" }}
             />
           </button>
         </div>
