@@ -27,6 +27,7 @@ const Tasbih = () => {
 
   return (
     <div
+      className="app-container"
       style={{
         width: "100vw",
         height: "calc(var(--vh) * 100)", // ✅ FIX BACKGROUND MOBILE
