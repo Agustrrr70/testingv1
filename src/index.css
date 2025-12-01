@@ -2,7 +2,7 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  overflow: hidden; /* tidak bisa geser */
+  overflow: hidden;
 }
 
 /* FONT */
@@ -11,7 +11,7 @@ html, body {
   src: url('/font/digital-7.ttf') format('truetype');
 }
 
-/* Default: aplikasi TIDAK bisa pinch-zoom */
+/* Semua aplikasi tidak bisa zoom */
 .app-container {
   touch-action: none;
   max-width: 420px;
@@ -19,9 +19,13 @@ html, body {
   background-color: #ffffff00;
 }
 
-/* IZINKAN pinch-zoom khusus untuk PDF viewer */
-.rpv-core__viewer,
-.rpv-core__inner,
-.rpv-core__viewer * {
+/* HEADER tetap tidak zoom */
+header, .header-container, .header-fixed {
+  touch-action: none !important;
+}
+
+/* Hanya area PDF yang bisa pinch zoom */
+.pdf-wrapper,
+.pdf-wrapper * {
   touch-action: pinch-zoom !important;
 }

@@ -31,9 +31,11 @@ const Ayat = () => {
       <Header title={surahName} />
 
       <div
+        className="pdf-wrapper"
         style={{
           flex: 1,
           overflowY: "auto",
+          overflowX: "hidden",
         }}
       >
         <Worker
