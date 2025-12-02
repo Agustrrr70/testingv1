@@ -42,7 +42,7 @@ const Surah = () => {
               cursor: "pointer",
             }}
             onClick={() =>
-              navigate(`/ayat/${s.number}?name=${encodeURIComponent(s.name)}`)
+              navigate(`/ayat/${s.name}?name=${encodeURIComponent(s.name)}`)
             }
           >
             <div

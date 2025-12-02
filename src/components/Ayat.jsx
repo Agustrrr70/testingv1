@@ -260,7 +260,7 @@ const Ayat = () => {
         background: "#fff",
       }}
     >
-      <Header title={surahName} />
+      <Header title={"Surah "+surahName} />
 
       <div
         ref={containerRef}
