@@ -13,8 +13,5 @@ html, body {
   margin: 0 auto;     /* biar tetap di tengah */
   background-color: #ffffff00; /* opsional */
 }
-/* Izinkan zoom pada area PDF */
-.pdf-zoom-area {
-    touch-action: pinch-zoom; /* allow pinch just here */
-}
+
 

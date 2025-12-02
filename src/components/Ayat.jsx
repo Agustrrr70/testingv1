@@ -5,7 +5,6 @@ import { useParams, useLocation } from "react-router-dom";
 import { Worker, Viewer } from "@react-pdf-viewer/core";
 import { SpecialZoomLevel } from "@react-pdf-viewer/core";
 import "@react-pdf-viewer/core/lib/styles/index.css";
-import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 
 import { version as pdfjsVersion } from "pdfjs-dist/package.json";
 
@@ -16,153 +15,177 @@ const Ayat = () => {
   const query = new URLSearchParams(useLocation().search);
   const surahName = query.get("name") || "Surah";
 
-  // refs & state untuk custom zoom
-  const containerRef = useRef(null); // outer container (scroll area)
-  const zoomTargetRef = useRef(null); // element yang akan di scale (viewer wrapper)
-  const lastTouchDistRef = useRef(null);
-  const baseScaleRef = useRef(1); // persistent base scale
-  const [scale, setScale] = useState(1);
+  const containerRef = useRef(null);
+  const zoomTargetRef = useRef(null);
 
-  // limits
+  const [scale, setScale] = useState(1);
+  const baseScaleRef = useRef(1);
+
+  const pointersRef = useRef(new Map());
+  const initialPinchDistRef = useRef(null);
+  const pinchCenterRef = useRef(null);
+
   const MIN_SCALE = 1;
   const MAX_SCALE = 3;
   const SCALE_STEP = 0.25;
 
+  // ---------- Hitung titik tengah pinch ----------
+  const getMidpoint = (p1, p2) => ({
+    x: (p1.x + p2.x) / 2,
+    y: (p1.y + p2.y) / 2,
+  });
+
+  const getDistance = (p1, p2) => Math.hypot(p2.x - p1.x, p2.y - p1.y);
+
+  // ---------- Konversi titik layar ke titik scroll container ----------
+  const convertPointToScrollSpace = (container, point) => {
+    const rect = container.getBoundingClientRect();
+    return {
+      x: point.x - rect.left + container.scrollLeft,
+      y: point.y - rect.top + container.scrollTop,
+    };
+  };
+
   useEffect(() => {
     const container = containerRef.current;
-    const zoomEl = zoomTargetRef.current;
-    if (!container || !zoomEl) return;
+    const target = zoomTargetRef.current;
+    if (!container || !target) return;
 
-    // TOUCH handlers for pinch
-    let ongoingPinch = false;
+    container.style.touchAction = "none";
 
-    const getDistance = (t1, t2) => {
-      const dx = t2.clientX - t1.clientX;
-      const dy = t2.clientY - t1.clientY;
-      return Math.hypot(dx, dy);
-    };
+    const onPointerDown = (ev) => {
+      container.setPointerCapture(ev.pointerId);
+      pointersRef.current.set(ev.pointerId, { x: ev.clientX, y: ev.clientY });
 
-    const onTouchStart = (e) => {
-      if (e.touches && e.touches.length === 2) {
-        ongoingPinch = true;
-        lastTouchDistRef.current = getDistance(e.touches[0], e.touches[1]);
-        // prevent browser pinch (if any)
-        e.preventDefault();
+      if (pointersRef.current.size === 2) {
+        const [p1, p2] = [...pointersRef.current.values()];
+        initialPinchDistRef.current = getDistance(p1, p2);
+
+        const midpoint = getMidpoint(p1, p2);
+        pinchCenterRef.current = convertPointToScrollSpace(container, midpoint);
       }
     };
 
-    const onTouchMove = (e) => {
-      if (ongoingPinch && e.touches && e.touches.length === 2) {
-        const dist = getDistance(e.touches[0], e.touches[1]);
-        const last = lastTouchDistRef.current || dist;
-        const delta = dist / last;
+    const onPointerMove = (ev) => {
+      if (!pointersRef.current.has(ev.pointerId)) return;
+
+      pointersRef.current.set(ev.pointerId, { x: ev.clientX, y: ev.clientY });
+
+      const pointers = [...pointersRef.current.values()];
+
+      // ------------------ PAN ------------------
+      if (pointers.length === 1) {
+        const p = pointers[0];
+        const prev = { x: p.prevX ?? p.x, y: p.prevY ?? p.y };
+
+        const dx = p.x - prev.x;
+        const dy = p.y - prev.y;
+
+        container.scrollLeft -= dx;
+        container.scrollTop -= dy;
+
+        p.prevX = p.x;
+        p.prevY = p.y;
+        return;
+      }
+
+      // ---------------- PINCH ZOOM ----------------
+      if (pointers.length === 2) {
+        const [p1, p2] = pointers;
+        const dist = getDistance(p1, p2);
+        const startDist = initialPinchDistRef.current || dist;
+
+        const ratio = dist / startDist;
         const newScale = clamp(
-          baseScaleRef.current * delta,
+          baseScaleRef.current * ratio,
           MIN_SCALE,
           MAX_SCALE
         );
-        // terapkan transform
-        zoomEl.style.transform = `scale(${newScale})`;
-        zoomEl.style.transformOrigin = "center top";
+
+        // Titik tengah baru
+        const midpoint = getMidpoint(p1, p2);
+
+        // Simpan posisi sebelumnya
+        const centerPrev = pinchCenterRef.current;
+
+        // Terapkan skala baru
+        target.style.transform = `scale(${newScale})`;
+        target.style.transformOrigin = "0 0";
         setScale(newScale);
-        // prevent scrolling while pinch
-        e.preventDefault();
+
+        // Hitung pergeseran agar titik tengah tetap di tempat
+        if (centerPrev) {
+          const ratioDelta = newScale / baseScaleRef.current;
+          container.scrollLeft =
+            centerPrev.x * ratioDelta - midpoint.x + container.scrollLeft;
+          container.scrollTop =
+            centerPrev.y * ratioDelta - midpoint.y + container.scrollTop;
+        }
       }
     };
-    // eslint-disable-next-line no-unused-vars
-    const onTouchEnd = (e) => {
-      if (ongoingPinch) {
-        // commit the current scale into baseScaleRef
+
+    const onPointerUp = (ev) => {
+      pointersRef.current.delete(ev.pointerId);
+
+      if (pointersRef.current.size < 2) {
         baseScaleRef.current = scale;
-        lastTouchDistRef.current = null;
-        ongoingPinch = false;
+        initialPinchDistRef.current = null;
+        pinchCenterRef.current = null;
       }
+
+      try {
+        container.releasePointerCapture(ev.pointerId);
+        // eslint-disable-next-line no-unused-vars, no-empty
+      } catch (e) {}
     };
 
-    // Double-tap handler (quick zoom/reset)
-    let lastTap = 0;
-    // eslint-disable-next-line no-unused-vars
-    const onSingleDoubleTap = (e) => {
-      const now = Date.now();
-      if (now - lastTap < 300) {
-        // double tap
-        const targetScale = scale >= 1.5 ? 1 : 2; // toggle
-        baseScaleRef.current = targetScale;
-        zoomEl.style.transform = `scale(${targetScale})`;
-        setScale(targetScale);
-      }
-      lastTap = now;
+    const onWheel = (ev) => {
+      if (!ev.ctrlKey) return;
+
+      ev.preventDefault();
+
+      const delta = ev.deltaY > 0 ? -SCALE_STEP : SCALE_STEP;
+      const newScale = clamp(
+        baseScaleRef.current + delta,
+        MIN_SCALE,
+        MAX_SCALE
+      );
+
+      const point = convertPointToScrollSpace(container, {
+        x: ev.clientX,
+        y: ev.clientY,
+      });
+
+      const prevScale = baseScaleRef.current;
+
+      target.style.transform = `scale(${newScale})`;
+      target.style.transformOrigin = "0 0";
+
+      container.scrollLeft =
+        (point.x * newScale) / prevScale -
+        (ev.clientX - container.getBoundingClientRect().left);
+      container.scrollTop =
+        (point.y * newScale) / prevScale -
+        (ev.clientY - container.getBoundingClientRect().top);
+
+      baseScaleRef.current = newScale;
+      setScale(newScale);
     };
 
-    // Wheel zoom (desktop) - optional
-    const onWheel = (e) => {
-      if (e.ctrlKey) {
-        e.preventDefault();
-        const delta = e.deltaY > 0 ? -SCALE_STEP : SCALE_STEP;
-        const newScale = clamp(scale + delta, MIN_SCALE, MAX_SCALE);
-        baseScaleRef.current = newScale;
-        zoomEl.style.transform = `scale(${newScale})`;
-        setScale(newScale);
-      }
-    };
-
-    // attach
-    container.addEventListener("touchstart", onTouchStart, { passive: false });
-    container.addEventListener("touchmove", onTouchMove, { passive: false });
-    container.addEventListener("touchend", onTouchEnd, { passive: false });
-    container.addEventListener("touchcancel", onTouchEnd, { passive: false });
-
-    container.addEventListener("click", onSingleDoubleTap);
+    container.addEventListener("pointerdown", onPointerDown);
+    container.addEventListener("pointermove", onPointerMove);
+    container.addEventListener("pointerup", onPointerUp);
+    container.addEventListener("pointercancel", onPointerUp);
     container.addEventListener("wheel", onWheel, { passive: false });
 
     return () => {
-      container.removeEventListener("touchstart", onTouchStart);
-      container.removeEventListener("touchmove", onTouchMove);
-      container.removeEventListener("touchend", onTouchEnd);
-      container.removeEventListener("touchcancel", onTouchEnd);
-
-      container.removeEventListener("click", onSingleDoubleTap);
+      container.removeEventListener("pointerdown", onPointerDown);
+      container.removeEventListener("pointermove", onPointerMove);
+      container.removeEventListener("pointerup", onPointerUp);
+      container.removeEventListener("pointercancel", onPointerUp);
       container.removeEventListener("wheel", onWheel);
     };
   }, [scale]);
-
-  // tombol toolbar
-  const zoomIn = () => {
-    const newScale = clamp(
-      baseScaleRef.current + SCALE_STEP,
-      MIN_SCALE,
-      MAX_SCALE
-    );
-    baseScaleRef.current = newScale;
-    if (zoomTargetRef.current) {
-      zoomTargetRef.current.style.transform = `scale(${newScale})`;
-      zoomTargetRef.current.style.transformOrigin = "center top";
-    }
-    setScale(newScale);
-  };
-
-  const zoomOut = () => {
-    const newScale = clamp(
-      baseScaleRef.current - SCALE_STEP,
-      MIN_SCALE,
-      MAX_SCALE
-    );
-    baseScaleRef.current = newScale;
-    if (zoomTargetRef.current) {
-      zoomTargetRef.current.style.transform = `scale(${newScale})`;
-      zoomTargetRef.current.style.transformOrigin = "center top";
-    }
-    setScale(newScale);
-  };
-
-  const resetZoom = () => {
-    baseScaleRef.current = 1;
-    if (zoomTargetRef.current) {
-      zoomTargetRef.current.style.transform = `scale(1)`;
-      zoomTargetRef.current.style.transformOrigin = "center top";
-    }
-    setScale(1);
-  };
 
   return (
     <div
@@ -179,62 +202,32 @@ const Ayat = () => {
     >
       <Header title={surahName} />
 
-      {/* toolbar sederhana untuk zoom */}
-      <div
-        style={{
-          display: "flex",
-          gap: 8,
-          padding: "8px",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <button onClick={zoomOut} aria-label="Zoom out">
-          -
-        </button>
-        <div>Zoom: {scale.toFixed(2)}x</div>
-        <button onClick={zoomIn} aria-label="Zoom in">
-          +
-        </button>
-        <button onClick={resetZoom} aria-label="Reset zoom">
-          Reset
-        </button>
-      </div>
-
-      {/* container scrollable — this is where we attach touch handlers */}
       <div
         ref={containerRef}
-        className="pdf-zoom-area"
         style={{
           flex: 1,
           overflow: "auto",
+          touchAction: "none",
           WebkitOverflowScrolling: "touch",
-          touchAction: "pan-y", // biarkan geser vertikal, pinch disimulasikan di atas
           position: "relative",
+          paddingBottom: "calc(env(safe-area-inset-bottom) + 70px)",
         }}
       >
-        {/* pembungkus yang akan di-scale */}
         <div
           ref={zoomTargetRef}
           style={{
             transform: `scale(${scale})`,
-            transformOrigin: "center top",
-            transition: "transform 120ms linear",
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
+            transformOrigin: "0 0",
           }}
         >
-          <div style={{ width: "100%", maxWidth: 480 }}>
-            <Worker
-              workerUrl={`https://unpkg.com/pdfjs-dist@${pdfjsVersion}/build/pdf.worker.min.js`}
-            >
-              <Viewer
-                fileUrl={`/ayat/${id}.pdf`}
-                defaultScale={SpecialZoomLevel.PageWidth}
-              />
-            </Worker>
-          </div>
+          <Worker
+            workerUrl={`https://unpkg.com/pdfjs-dist@${pdfjsVersion}/build/pdf.worker.min.js`}
+          >
+            <Viewer
+              fileUrl={`/ayat/${id}.pdf`}
+              defaultScale={SpecialZoomLevel.PageWidth}
+            />
+          </Worker>
         </div>
       </div>
     </div>
