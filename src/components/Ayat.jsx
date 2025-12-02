@@ -23,26 +23,26 @@ const Ayat = () => {
 
   const pointersRef = useRef(new Map());
   const initialPinchDistRef = useRef(null);
-  const pinchCenterRef = useRef(null);
 
   const MIN_SCALE = 1;
   const MAX_SCALE = 3;
   const SCALE_STEP = 0.25;
 
-  // ---------- Hitung titik tengah pinch ----------
+  // hitung midpoint dan distance
   const getMidpoint = (p1, p2) => ({
     x: (p1.x + p2.x) / 2,
     y: (p1.y + p2.y) / 2,
   });
+  const getDistance = (p1, p2) =>
+    Math.hypot(p2.x - p1.x, p2.y - p1.y);
 
-  const getDistance = (p1, p2) => Math.hypot(p2.x - p1.x, p2.y - p1.y);
-
-  // ---------- Konversi titik layar ke titik scroll container ----------
-  const convertPointToScrollSpace = (container, point) => {
+  // konversi titik client (layar) ke koordinat "konten" sebelum scaling
+  // contentCoord = (scroll + (client - rect.left)) / currentScale
+  const clientPointToContent = (container, clientPoint, currentScale) => {
     const rect = container.getBoundingClientRect();
     return {
-      x: point.x - rect.left + container.scrollLeft,
-      y: point.y - rect.top + container.scrollTop,
+      x: (container.scrollLeft + (clientPoint.x - rect.left)) / currentScale,
+      y: (container.scrollTop + (clientPoint.y - rect.top)) / currentScale,
     };
   };
 
@@ -57,29 +57,33 @@ const Ayat = () => {
       container.setPointerCapture(ev.pointerId);
       pointersRef.current.set(ev.pointerId, { x: ev.clientX, y: ev.clientY });
 
+      // jika sekarang ada 2 pointer, inisialisasi pinch
       if (pointersRef.current.size === 2) {
         const [p1, p2] = [...pointersRef.current.values()];
         initialPinchDistRef.current = getDistance(p1, p2);
-
-        const midpoint = getMidpoint(p1, p2);
-        pinchCenterRef.current = convertPointToScrollSpace(container, midpoint);
+        // baseScaleRef.current sudah menyimpan skala sebelum pinch dimulai
       }
     };
 
     const onPointerMove = (ev) => {
       if (!pointersRef.current.has(ev.pointerId)) return;
 
-      pointersRef.current.set(ev.pointerId, { x: ev.clientX, y: ev.clientY });
+      // update pointer
+      const entry = pointersRef.current.get(ev.pointerId);
+      entry.x = ev.clientX;
+      entry.y = ev.clientY;
 
       const pointers = [...pointersRef.current.values()];
 
-      // ------------------ PAN ------------------
+      // PAN (satu jari)
       if (pointers.length === 1) {
         const p = pointers[0];
-        const prev = { x: p.prevX ?? p.x, y: p.prevY ?? p.y };
+        // gunakan prev stored pada object untuk menghitung delta
+        const prevX = p.prevX ?? p.x;
+        const prevY = p.prevY ?? p.y;
 
-        const dx = p.x - prev.x;
-        const dy = p.y - prev.y;
+        const dx = p.x - prevX;
+        const dy = p.y - prevY;
 
         container.scrollLeft -= dx;
         container.scrollTop -= dy;
@@ -89,87 +93,88 @@ const Ayat = () => {
         return;
       }
 
-      // ---------------- PINCH ZOOM ----------------
+      // PINCH (dua jari)
       if (pointers.length === 2) {
         const [p1, p2] = pointers;
         const dist = getDistance(p1, p2);
         const startDist = initialPinchDistRef.current || dist;
-
         const ratio = dist / startDist;
-        const newScale = clamp(
-          baseScaleRef.current * ratio,
-          MIN_SCALE,
-          MAX_SCALE
-        );
 
-        // Titik tengah baru
+        // newScale dihitung dari baseScaleRef (skala sebelum pinch dimulai)
+        let newScale = clamp(baseScaleRef.current * ratio, MIN_SCALE, MAX_SCALE);
+
+        // midpoint di ruang client (koordinat layar)
         const midpoint = getMidpoint(p1, p2);
 
-        // Simpan posisi sebelumnya
-        const centerPrev = pinchCenterRef.current;
+        // konversi midpoint ke koordinat konten sebelum zoom (content coords)
+        const contentCoord = clientPointToContent(container, midpoint, baseScaleRef.current);
 
-        // Terapkan skala baru
-        target.style.transform = `scale(${newScale})`;
+        // terapkan transform (scale) ke target
+        // gunakan transformOrigin 0 0 sehingga perhitungan scroll menggunakan koordinat absolut
         target.style.transformOrigin = "0 0";
+        target.style.transform = `scale(${newScale})`;
         setScale(newScale);
 
-        // Hitung pergeseran agar titik tengah tetap di tempat
-        if (centerPrev) {
-          const ratioDelta = newScale / baseScaleRef.current;
-          container.scrollLeft =
-            centerPrev.x * ratioDelta - midpoint.x + container.scrollLeft;
-          container.scrollTop =
-            centerPrev.y * ratioDelta - midpoint.y + container.scrollTop;
-        }
+        // sekarang hitung scroll baru agar contentCoord tetap berada di posisi midpoint pada layar
+        // formula: scrollNew = contentCoord * newScale - (midpoint.client - rect.left)
+        const rect = container.getBoundingClientRect();
+        const clientOffsetX = midpoint.x - rect.left;
+        const clientOffsetY = midpoint.y - rect.top;
+
+        container.scrollLeft = contentCoord.x * newScale - clientOffsetX;
+        container.scrollTop = contentCoord.y * newScale - clientOffsetY;
       }
     };
 
     const onPointerUp = (ev) => {
       pointersRef.current.delete(ev.pointerId);
 
+      // reset prev coords pada sisa pointer agar pan tidak lompat
+      for (const p of pointersRef.current.values()) {
+        delete p.prevX;
+        delete p.prevY;
+      }
+
+      // jika semua pointer sudah dilepas (atau tersisa satu), set baseScale jadi skala terakhir
       if (pointersRef.current.size < 2) {
         baseScaleRef.current = scale;
         initialPinchDistRef.current = null;
-        pinchCenterRef.current = null;
       }
 
       try {
         container.releasePointerCapture(ev.pointerId);
-        // eslint-disable-next-line no-unused-vars, no-empty
-      } catch (e) {}
+      // eslint-disable-next-line no-unused-vars
+      } catch (e) {
+        // ignore
+      }
     };
 
     const onWheel = (ev) => {
+      // hanya zoom jika ctrlKey (desktop) atau pinch simulator
       if (!ev.ctrlKey) return;
-
       ev.preventDefault();
 
       const delta = ev.deltaY > 0 ? -SCALE_STEP : SCALE_STEP;
-      const newScale = clamp(
-        baseScaleRef.current + delta,
-        MIN_SCALE,
-        MAX_SCALE
-      );
+      const newScale = clamp(baseScaleRef.current + delta, MIN_SCALE, MAX_SCALE);
 
-      const point = convertPointToScrollSpace(container, {
-        x: ev.clientX,
-        y: ev.clientY,
-      });
+      // titik fokus (mouse) ke content coords berdasarkan baseScaleRef
+      const rect = container.getBoundingClientRect();
+      const clientPoint = { x: ev.clientX, y: ev.clientY };
+      const contentCoord = clientPointToContent(container, clientPoint, baseScaleRef.current);
 
-      const prevScale = baseScaleRef.current;
-
-      target.style.transform = `scale(${newScale})`;
+      // apply transform
       target.style.transformOrigin = "0 0";
+      target.style.transform = `scale(${newScale})`;
+      setScale(newScale);
 
-      container.scrollLeft =
-        (point.x * newScale) / prevScale -
-        (ev.clientX - container.getBoundingClientRect().left);
-      container.scrollTop =
-        (point.y * newScale) / prevScale -
-        (ev.clientY - container.getBoundingClientRect().top);
+      // hitung scroll baru supaya fokus tetap pada pointer
+      const clientOffsetX = ev.clientX - rect.left;
+      const clientOffsetY = ev.clientY - rect.top;
+
+      container.scrollLeft = contentCoord.x * newScale - clientOffsetX;
+      container.scrollTop = contentCoord.y * newScale - clientOffsetY;
 
       baseScaleRef.current = newScale;
-      setScale(newScale);
     };
 
     container.addEventListener("pointerdown", onPointerDown);
@@ -210,7 +215,8 @@ const Ayat = () => {
           touchAction: "none",
           WebkitOverflowScrolling: "touch",
           position: "relative",
-          paddingBottom: "calc(env(safe-area-inset-bottom) + 70px)",
+          // padding bottom untuk menghindari tertutup navigation bar di mobile
+          paddingBottom: "calc(env(safe-area-inset-bottom) + 90px)",
         }}
       >
         <div
