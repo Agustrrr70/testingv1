@@ -8,7 +8,7 @@ const Header = ({ title, onSearchChange }) => {
       style={{
         width: "100%",
         height: `${HEADER_HEIGHT}px`,
-        backgroundColor: "#05420bff",
+        backgroundColor: "#244502",
         boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
         display: "flex",
         alignItems: "center",
@@ -21,18 +21,17 @@ const Header = ({ title, onSearchChange }) => {
         padding: "0 12px",
       }}
     >
-      {/* Tombol Back (sedikit naik) */}
       <button
         onClick={() => window.history.back()}
         style={{
           fontSize: "22px",
-          fontWeight: "1000",
+          fontWeight: "500",
           background: "none",
           border: "none",
           cursor: "pointer",
           color: "#ffffff",
           position: "relative",
-          top: "-3px",
+          top: "-1px",
         }}
       >
         ←
