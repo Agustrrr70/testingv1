@@ -7,6 +7,7 @@ import { SpecialZoomLevel } from "@react-pdf-viewer/core";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import { version as pdfjsVersion } from "pdfjs-dist/package.json";
 
+
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
 const Ayat = () => {
@@ -270,6 +271,7 @@ const Ayat = () => {
           touchAction: "none",
           WebkitOverflowScrolling: "touch",
           position: "relative",
+          paddingTop:HEADER_HEIGHT_PX,
           paddingBottom: "calc(env(safe-area-inset-bottom) + 90px)",
         }}
       >

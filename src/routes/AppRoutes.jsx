@@ -10,12 +10,14 @@ import Burdah from "../components/Burdah";
 import Simthud from "../components/Simthud";
 import Maulid from "../components/Maulid";
 import Ayat from "../components/Ayat";
+import Index from "../components/Index";
 
 export default function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Index />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/surah" element={<Surah />} />
         <Route path="/wirid" element={<Wirid />} />
         <Route path="/doa" element={<Doa />} />

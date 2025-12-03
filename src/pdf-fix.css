@@ -1,0 +1,27 @@
+/* Root PDF viewer full width layar */
+.rpv-core__viewer,
+.rpv-core__inner-container,
+.rpv-core__inner-pages {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Pastikan halaman PDF tidak menindih satu sama lain */
+.rpv-core__page-layer {
+    position: relative !important;
+}
+
+/* Canvas PDF fit ke layar tanpa space kiri/kanan */
+.rpv-core__canvas-layer canvas {
+    width: 100vw !important;
+    height: auto !important;
+    display: block !important;
+    margin: 0 auto !important;
+}
+
+/* Hilangkan margin default antar halaman */
+.rpv-core__page-layer + .rpv-core__page-layer {
+    margin-top: 0px !important;
+}
