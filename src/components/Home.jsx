@@ -30,8 +30,6 @@ const Home = () => {
 
   const handleClick = (route, index) => {
     setActiveIndex(index);
-
-    // tunggu 150ms biar animasi terlihat
     setTimeout(() => {
       setActiveIndex(null);
       navigate(route);

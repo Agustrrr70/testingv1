@@ -47,16 +47,16 @@ const Surah = () => {
           >
             <div
               style={{
-                fontSize: "14px",
+                fontSize: "15px",
                 fontWeight: 600,
-                marginBottom: "3px",
+                marginBottom: "2px",
                 color: "#222",
               }}
             >
               {s.name}
             </div>
 
-            <div style={{ fontSize: "11px", color: "#666" }}>
+            <div style={{ fontSize: "12px", color: "#666" }}>
               {s.arab}
             </div>
           </li>
