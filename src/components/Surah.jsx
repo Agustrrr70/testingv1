@@ -10,7 +10,7 @@ const Surah = () => {
   const filteredSurah = surahList.filter(
     (s) =>
       s.name.toLowerCase().includes(keyword.toLowerCase()) ||
-      s.meaning.toLowerCase().includes(keyword.toLowerCase())
+      s.arab.toLowerCase().includes(keyword.toLowerCase())
   );
 
   return (
@@ -57,7 +57,7 @@ const Surah = () => {
             </div>
 
             <div style={{ fontSize: "11px", color: "#666" }}>
-              {s.meaning}
+              {s.arab}
             </div>
           </li>
         ))}

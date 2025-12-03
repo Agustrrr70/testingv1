@@ -271,7 +271,6 @@ const Ayat = () => {
           touchAction: "none",
           WebkitOverflowScrolling: "touch",
           position: "relative",
-          paddingTop:HEADER_HEIGHT_PX,
           paddingBottom: "calc(env(safe-area-inset-bottom) + 90px)",
         }}
       >

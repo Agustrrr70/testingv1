@@ -1,27 +1,45 @@
-/* Root PDF viewer full width layar */
+/* ====== RESET SEMUA WRAPPER UTAMA ====== */
+.rpv-core__inner,
 .rpv-core__viewer,
-.rpv-core__inner-container,
-.rpv-core__inner-pages {
-    width: 100vw !important;
-    max-width: 100vw !important;
+.rpv-core__page-layer,
+.rpv-core__page,
+.rpv-core__canvas-layer,
+.rpv-core__annotation-layer,
+.rpv-core__text-layer {
     margin: 0 !important;
     padding: 0 !important;
-}
-
-/* Pastikan halaman PDF tidak menindih satu sama lain */
-.rpv-core__page-layer {
-    position: relative !important;
-}
-
-/* Canvas PDF fit ke layar tanpa space kiri/kanan */
-.rpv-core__canvas-layer canvas {
-    width: 100vw !important;
-    height: auto !important;
+    width: 100% !important;
     display: block !important;
-    margin: 0 auto !important;
+    box-sizing: border-box !important;
 }
 
-/* Hilangkan margin default antar halaman */
-.rpv-core__page-layer + .rpv-core__page-layer {
-    margin-top: 0px !important;
+/* ====== FIX KANVAS ====== */
+.rpv-core__canvas-layer canvas {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    image-rendering: crisp-edges !important;
+}
+
+/* ====== BUANG SCROLL HORIZONTAL ====== */
+.rpv-core__viewer {
+    overflow-x: hidden !important;
+}
+
+/* ====== FIX SHIFT KIRI/ KANAN DARI TRANSFORM PDFJS ====== */
+.rpv-core__page-layer,
+.rpv-core__canvas-layer,
+.rpv-core__text-layer,
+.rpv-core__annotation-layer {
+    left: 0 !important;
+    right: 0 !important;
+    transform-origin: top left !important;
+}
+
+/* ====== HALAMAN JANGAN BERI GAP ATAS/BAWAH ====== */
+.rpv-core__page {
+    border: none !important;
+    background: transparent !important;
 }

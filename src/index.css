@@ -9,9 +9,13 @@ html, body {
   src: url('/font/digital-7.ttf') format('truetype');
 }
 .app-container {
-  max-width: 480px;   /* ukuran ideal aplikasi mobile */
-  margin: 0 auto;     /* biar tetap di tengah */
-  background-color: #ffffff00; /* opsional */
+  width: 100%;       /* fleksibel mengikuti layar */
+  max-width: 420px;  /* batas maksimal */
+  aspect-ratio: 9 / 16;  /* tinggi otomatis mengikuti lebar */
+  margin: 0 auto;
+  background-color: #ffffff00;
 }
+
+
 
 
