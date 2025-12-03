@@ -1,6 +1,6 @@
 /* eslint-disable no-empty */
 import React, { useRef, useEffect, useState } from "react";
-import Header, { HEADER_HEIGHT_PX } from "./Header";
+import Header, { HEADER_HEIGHT_PX } from "../components/Header";
 import { useParams, useLocation } from "react-router-dom";
 import { Worker, Viewer } from "@react-pdf-viewer/core";
 import { SpecialZoomLevel } from "@react-pdf-viewer/core";

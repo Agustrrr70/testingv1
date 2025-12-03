@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Header, { HEADER_HEIGHT_PX } from "./Header";
+import Header, { HEADER_HEIGHT_PX } from "../components/Header";
 
 const Tasbih = () => {
   const [count, setCount] = useState(0);

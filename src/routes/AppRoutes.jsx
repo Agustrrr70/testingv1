@@ -1,16 +1,16 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "../components/Home";
-import Surah from "../components/Surah";
-import Wirid from "../components/Wirid";
-import Doa from "../components/Doa";
-import Khutbah from "../components/Khutbah";
-import Dalail from "../components/Dalail";
-import Tasbih from "../components/Tasbih";
-import Burdah from "../components/Burdah";
-import Simthud from "../components/Simthud";
-import Maulid from "../components/Maulid";
-import Ayat from "../components/Ayat";
-import Index from "../components/Index";
+import Home from "../pages/Home";
+import Surah from "../pages/Surah";
+import Wirid from "../pages/Wirid";
+import Doa from "../pages/Doa";
+import Khutbah from "../pages/Khutbah";
+import Dalail from "../pages/Dalail";
+import Tasbih from "../pages/Tasbih";
+import Burdah from "../pages/Burdah";
+import Simthud from "../pages/Simthud";
+import Maulid from "../pages/Maulid";
+import Ayat from "../pages/Ayat";
+import Index from "../pages/Index";
 
 export default function AppRoutes() {
   return (

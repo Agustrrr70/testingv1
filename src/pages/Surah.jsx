@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Header, { HEADER_HEIGHT_PX } from "./Header";
+import Header, { HEADER_HEIGHT_PX } from "../components/Header";
 import { surahList } from "../data/surahList";
 import { useNavigate } from "react-router-dom";
 
