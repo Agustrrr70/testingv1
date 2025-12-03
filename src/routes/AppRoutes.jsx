@@ -16,7 +16,7 @@ export default function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Index />} />
+        <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
         <Route path="/surah" element={<Surah />} />
         <Route path="/wirid" element={<Wirid />} />
