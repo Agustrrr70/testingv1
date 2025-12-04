@@ -1,6 +1,6 @@
 export const surahList = [
-  { name: "Al-Kahfi", arab: "الكهف" },
-  { name: "Yasin", arab: "يس" },
-  { name: "Al-Waqi'ah", arab: "الواقعة" },
-  { name: "Al-Mulk", arab: "الملك" },
+  { name: "Surah Al-Kahfi", arab: "الكهف" },
+  { name: "Surah Yasin", arab: "يس" },
+  { name: "Surah Al-Waqi'ah", arab: "الواقعة" },
+  { name: "Surah Al-Mulk", arab: "الملك" },
 ];

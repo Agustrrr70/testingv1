@@ -27,7 +27,7 @@ export default function AppRoutes() {
         <Route path="/burdah" element={<Burdah />} />
         <Route path="/simthud" element={<Simthud />} />
         <Route path="/maulid" element={<Maulid />} />
-        <Route path="/ayat/:id" element={<Ayat />} />
+        <Route path="/ayat/:folder/:id" element={<Ayat />} />
       </Routes>
     </BrowserRouter>
   );

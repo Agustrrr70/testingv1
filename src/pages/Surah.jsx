@@ -42,7 +42,11 @@ const Surah = () => {
               cursor: "pointer",
             }}
             onClick={() =>
-              navigate(`/Ayat/${s.name}?name=${encodeURIComponent(s.name)}&type=surah`)
+              navigate(
+                `/ayat/surah/${encodeURIComponent(
+                  s.name
+                )}?name=${encodeURIComponent(s.name)}`
+              )
             }
           >
             <div
@@ -56,9 +60,7 @@ const Surah = () => {
               {s.name}
             </div>
 
-            <div style={{ fontSize: "12px", color: "#666" }}>
-              {s.arab}
-            </div>
+            <div style={{ fontSize: "12px", color: "#666" }}>{s.arab}</div>
           </li>
         ))}
       </ul>

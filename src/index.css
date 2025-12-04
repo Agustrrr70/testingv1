@@ -1,21 +1,77 @@
+/* Hilangkan scroll global */
 html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  overflow: hidden; 
+  overflow: hidden;
 }
+
+/* Font Digital */
 @font-face {
   font-family: 'Digital7';
   src: url('/font/digital-7.ttf') format('truetype');
 }
+
+/* Container aplikasi (untuk format mobile 9:16) */
 .app-container {
-  width: 100%;       /* fleksibel mengikuti layar */
-  max-width: 420px;  /* batas maksimal */
-  aspect-ratio: 9 / 16;  /* tinggi otomatis mengikuti lebar */
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: 9 / 16;
   margin: 0 auto;
-  background-color: #ffffff00;
+  background-color: transparent;
+  overflow: hidden;
 }
 
+/* ================================
+   PDF VIEWER FIXES
+================================ */
 
+/* Hilangkan padding/margin default viewer */
+.rpv-core__viewer {
+  padding: 0 !important;
+  margin: 0 !important;
+  display: block;
+  width: 100% !important;
+}
 
+/* Hilangkan margin/space antar halaman */
+.rpv-core__page {
+  margin: 0 !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  display: block;
+}
 
+/* Layer utama halaman mengikuti parent */
+.rpv-core__page-layer,
+.rpv-core__page-canvas,
+.rpv-core__text-layer {
+  width: 100% !important;
+  height: auto !important;
+}
+
+/* Target zoom custom */
+.pdf-zoom-target {
+  width: 100%;
+  transform-origin: 0 0;
+  display: block;
+}
+
+/* Pastikan inner-pages tidak memberi gap tambahan */
+.rpv-core__inner-pages {
+  padding: 0 !important;
+  margin: 0 !important;
+  gap: 0 !important;
+}
+
+/* Hilangkan wrapper centering yang kadang muncul */
+.rpv-core__page-layer {
+  display: block !important;
+}
+
+/* Mencegah kedap-kedip (flicker) saat zoom/resize */
+canvas {
+  image-rendering: optimizeQuality;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}

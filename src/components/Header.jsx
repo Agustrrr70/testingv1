@@ -41,8 +41,8 @@ const Header = ({ title, onSearchChange }) => {
       <div
         style={{
           marginLeft: "8px",
-          fontSize: "20px",
-          fontWeight: "bold",
+          fontSize: "19px",
+          fontWeight:"bold",
           color: "#ffffff",
           flex: 1,
         }}
