@@ -4,9 +4,9 @@ export const wiridList = [
   { name: "Rathibul Haddad", arab: "الرَّاتِبُ الحَدَّاد" },
   { name: "Rathibul Atthos", arab: "رَاتِبُ العَطَّاس" },
   { name: "Hizib Bahar", arab: "حِزْبُ البَحْر" },
-  { name: "Tarhim Sebelum Subuh", arab: "تَرْحِيمُ قَبْلَ الفَجْر" },
+  { name: "Tarhim Sebelum Subuh", arab: " " },
   {
     name: "Istigfar Menjelang Maghrib",
-    arab: "اِسْتِغْفَارٌ قَبْلَ المَغْرِب",
+    arab: " ",
   },
 ];
