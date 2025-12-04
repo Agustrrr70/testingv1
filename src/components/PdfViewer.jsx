@@ -1,25 +1,21 @@
 /* eslint-disable no-empty */
 import React, { useRef, useEffect, useState } from "react";
-import Header, { HEADER_HEIGHT_PX } from "../components/Header"
+import Header, { HEADER_HEIGHT_PX } from "./Header";
 import { useParams, useLocation } from "react-router-dom";
 import { Worker, Viewer } from "@react-pdf-viewer/core";
 import { SpecialZoomLevel } from "@react-pdf-viewer/core";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import { version as pdfjsVersion } from "pdfjs-dist/package.json";
 
+
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
-const Ayat = () => {
+const PdfViewer = () => {
   const { id } = useParams();
   const [renderScale, setRenderScale] = useState(1);
 
   const query = new URLSearchParams(useLocation().search);
-  const nameQuery = query.get("name") || ""; // judul yang dikirim dari list
-  const typeQuery = (query.get("type") || "").toLowerCase(); // 'wirid' atau 'surah'
-  const locationPath = useLocation().pathname || "";
-
-  // determine type: prefer explicit query param, otherwise infer from path
-  const isWirid = typeQuery === "wirid" || /\/wirid\//i.test(locationPath) || /\/Wirid\//.test(locationPath);
+  const surahName = query.get("name") || "Surah";
 
   const containerRef = useRef(null);
   const zoomTargetRef = useRef(null);
@@ -253,18 +249,6 @@ const Ayat = () => {
     // NOTE: intentionally empty deps: we attach handlers once and rely on refs.
   }, []);
 
-  // build file url depending on type
-  // ensure id is encoded safely for URL; caller should use a file name that matches public files
-  const fileId = id || "";
-  const encodedId = encodeURIComponent(fileId);
-  const basePath = isWirid ? "wirid" : "surah";
-  const fileUrl = `/${basePath}/${encodedId}.pdf`;
-
-  // header title
-  const headerTitle = isWirid
-    ? `Wirid ${nameQuery || fileId}`
-    : `Surah ${nameQuery || fileId}`;
-
   return (
     <div
       style={{
@@ -277,7 +261,7 @@ const Ayat = () => {
         background: "#fff",
       }}
     >
-      <Header title={headerTitle} />
+      <Header title={"Surah "+surahName} />
 
       <div
         ref={containerRef}
@@ -309,7 +293,7 @@ const Ayat = () => {
               workerUrl={`https://unpkg.com/pdfjs-dist@${pdfjsVersion}/build/pdf.worker.min.js`}
             >
               <Viewer
-                fileUrl={fileUrl}
+                fileUrl={`/surah/${id}.pdf`}
                 defaultScale={SpecialZoomLevel.PageWidth}
               />
             </Worker>
@@ -320,4 +304,4 @@ const Ayat = () => {
   );
 };
 
-export default Ayat;
+export default PdfViewer;

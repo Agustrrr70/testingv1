@@ -42,7 +42,7 @@ const Wirid = () => {
               cursor: "pointer",
             }}
             onClick={() =>
-              navigate(`/wirid/${s.name}?name=${encodeURIComponent(s.name)}`)
+              navigate(`/Ayat/${s.name}?name=${encodeURIComponent(s.name)}&type=wirid`)
             }
           >
             <div
@@ -55,6 +55,7 @@ const Wirid = () => {
             >
               {s.name}
             </div>
+            <div style={{ fontSize: "12px", color: "#666" }}>{s.arab}</div>
           </li>
         ))}
       </ul>

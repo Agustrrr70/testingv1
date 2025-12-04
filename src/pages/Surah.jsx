@@ -31,7 +31,7 @@ const Surah = () => {
       <ul style={{ listStyle: "none", padding: 0, marginTop: "10px" }}>
         {filteredSurah.map((s) => (
           <li
-            key={s.number}
+            key={s.name}
             style={{
               padding: "12px 16px",
               marginBottom: "10px",
@@ -42,7 +42,7 @@ const Surah = () => {
               cursor: "pointer",
             }}
             onClick={() =>
-              navigate(`/surah/${s.name}?name=${encodeURIComponent(s.name)}`)
+              navigate(`/Ayat/${s.name}?name=${encodeURIComponent(s.name)}&type=surah`)
             }
           >
             <div
