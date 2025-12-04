@@ -293,7 +293,7 @@ const Ayat = () => {
               workerUrl={`https://unpkg.com/pdfjs-dist@${pdfjsVersion}/build/pdf.worker.min.js`}
             >
               <Viewer
-                fileUrl={`/ayat/${id}.pdf`}
+                fileUrl={`/surah/${id}.pdf`}
                 defaultScale={SpecialZoomLevel.PageWidth}
               />
             </Worker>

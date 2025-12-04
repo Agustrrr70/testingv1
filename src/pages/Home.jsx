@@ -29,7 +29,7 @@ const Home = () => {
   ];
 
   const handleClick = (route, index) => {
-    setActiveIndex(index);
+    setActiveIndex(index);  
     setTimeout(() => {
       setActiveIndex(null);
       navigate(route);
